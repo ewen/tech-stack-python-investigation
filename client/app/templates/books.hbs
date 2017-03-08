@@ -1,5 +1,7 @@
 <h2>Books</h2>
 
+<ul>
 {{#each model as |book|}}
-  {{book.title}}
+  <li>{{book.title}} - {{book.pubDate}}</li>
 {{/each}}
+</ul>

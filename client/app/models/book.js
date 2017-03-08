@@ -1,5 +1,8 @@
 import DS from 'ember-data';
 
-export default DS.Model.extend({
+const {attr} = DS
 
+export default DS.Model.extend({
+  title: attr('string'),
+  pubDate: attr('date')
 });
