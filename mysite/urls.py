@@ -32,10 +32,11 @@ class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
 class BooksSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Book
-        fields = ('author', 'title', 'pub_date')
+        fields = ('author', 'genre', 'title', 'pub_date')
 
     included_serializers = {
-        'author': 'mysite.urls.AuthorsSerializer'
+        'author': 'mysite.urls.AuthorsSerializer',
+        'genre': 'mysite.urls.GenresSerializer'
     }
 
 class GenresSerializer(serializers.HyperlinkedModelSerializer):

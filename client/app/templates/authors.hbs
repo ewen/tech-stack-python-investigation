@@ -5,7 +5,7 @@
   <li>{{author.name}}</li>
   <ul>
   {{#each author.books as |book|}}
-    <li>{{book.title}} - {{book.displayPubDate}}</li>
+    <li>{{book.title}} - {{book.displayPubDate}} ({{book.genre.name}})</li>
   {{/each}}
   </ul>
 {{/each}}
