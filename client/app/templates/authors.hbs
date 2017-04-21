@@ -1,0 +1,14 @@
+<h2>Authors</h2>
+
+<ul>
+{{#each model as |author|}}
+  <li>{{author.name}}</li>
+  <ul>
+  {{#each author.books as |book|}}
+    <li>{{book.title}} - {{book.displayPubDate}}</li>
+  {{/each}}
+  </ul>
+{{/each}}
+</ul>
+
+{{#link-to "index"}}Back{{/link-to}}
