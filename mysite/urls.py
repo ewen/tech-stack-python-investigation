@@ -17,25 +17,34 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from books.models import Book, Author
 
-from rest_framework import routers, serializers, viewsets
+from rest_framework import routers, viewsets
+from rest_framework_json_api import serializers
+
+class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Author
+        fields = ['name', 'books']
+
+    included_serializers = {
+        'books': 'mysite.urls.BooksSerializer'
+    }
 
 class BooksSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Book
         fields = ('author', 'title', 'pub_date')
 
-class BookViewSet(viewsets.ModelViewSet):
-    queryset = Book.objects.all()
-    serializer_class = BooksSerializer
-
-class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Author
-        fields = ['name']
+    included_serializers = {
+        'author': 'mysite.urls.AuthorsSerializer'
+    }
 
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BooksSerializer
 
 router = routers.DefaultRouter()
 router.register(r'books', BookViewSet)

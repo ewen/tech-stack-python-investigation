@@ -2,6 +2,8 @@
 
 <ul>
 {{#each model as |book|}}
-  <li>{{book.title}} - {{book.pubDate}}</li>
+  <li>{{book.title}} - {{book.displayPubDate}} - {{book.author.name}}</li>
 {{/each}}
 </ul>
+
+{{#link-to "index"}}Back{{/link-to}}
