@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from books.models import Book, Author
+from books.models import Book, Author, Genre
 
 from rest_framework import routers, viewsets
 from rest_framework_json_api import serializers
@@ -38,6 +38,15 @@ class BooksSerializer(serializers.HyperlinkedModelSerializer):
         'author': 'mysite.urls.AuthorsSerializer'
     }
 
+class GenresSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ('name', 'books')
+
+    included_serializers = {
+        'books': 'mysite.urls.BooksSerializer'
+    }
+
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
@@ -46,9 +55,14 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BooksSerializer
 
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = GenresSerializer
+
 router = routers.DefaultRouter()
 router.register(r'books', BookViewSet)
 router.register(r'authors', AuthorViewSet)
+router.register(r'genres', GenreViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
