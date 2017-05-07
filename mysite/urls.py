@@ -19,6 +19,7 @@ from books.models import Book, Author, Genre
 
 from rest_framework import routers, viewsets
 from rest_framework_json_api import serializers
+from django.views.decorators.csrf import csrf_protect
 
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -39,6 +40,7 @@ class BooksSerializer(serializers.HyperlinkedModelSerializer):
         'genre': 'mysite.urls.GenresSerializer'
     }
 
+
 class GenresSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Genre
@@ -48,13 +50,17 @@ class GenresSerializer(serializers.HyperlinkedModelSerializer):
         'books': 'mysite.urls.BooksSerializer'
     }
 
+
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
 
+
+
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BooksSerializer
+
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()

@@ -1,7 +1,8 @@
 <h2>Authors</h2>
 
 <ul>
-{{#each model as |author|}}
+  {{log model.authors.length}}
+{{#each model.authors as |author|}}
   <li>{{author.name}}</li>
   <ul>
   {{#each author.books as |book|}}
