@@ -11,4 +11,12 @@
 {{/each}}
 </ul>
 
+{{add-edit-author
+  author=model.newAuthor
+  saveAuthor=(route-action 'saveAuthor')
+}}
+
+
+
+
 {{#link-to "index"}}Back{{/link-to}}

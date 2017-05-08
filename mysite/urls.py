@@ -19,6 +19,7 @@ from books.models import Book, Author, Genre
 
 from rest_framework import routers, viewsets
 from rest_framework_json_api import serializers
+from rest_framework.authtoken.views import obtain_auth_token
 
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -67,6 +68,7 @@ router.register(r'genres', GenreViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^api-auth-token/', obtain_auth_token),
     url(r'^books/', include('books.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
