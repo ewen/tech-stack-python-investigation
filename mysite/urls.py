@@ -20,6 +20,9 @@ from books.models import Book, Author, Genre
 from rest_framework import routers, viewsets
 from rest_framework_json_api import serializers
 from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render
+from django.conf import settings
+from django.contrib.staticfiles import views
 
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -72,8 +75,18 @@ router.register(r'authors', AuthorViewSet)
 router.register(r'genres', GenreViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^books/', include('books.urls')),
+    url(r'^api/', include(router.urls)),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^assets/(?P<path>.*)$', views.serve),
+    ]
+
+def ember (request):
+    return render(request, 'index.html', {})
+
+# Serve up Ember
+urlpatterns.append(url(r'^', ember))
