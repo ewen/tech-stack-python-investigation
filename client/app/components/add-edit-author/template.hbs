@@ -2,6 +2,7 @@
   label='Author Name'
   value=author.name
   update=(action (mut author.name))
+  errors=author.errors.name
 }}
 
 <button {{action saveAuthor author}}>Save Author</button>
