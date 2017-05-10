@@ -26,7 +26,8 @@ from rest_framework.permissions import IsAuthenticated
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Author
-        fields = ['name', 'books']
+        fields = ('name', 'books')
+        read_only_fields = ('books',)
 
     included_serializers = {
         'books': 'mysite.urls.BooksSerializer'
@@ -41,6 +42,7 @@ class BooksSerializer(serializers.HyperlinkedModelSerializer):
         'author': 'mysite.urls.AuthorsSerializer',
         'genre': 'mysite.urls.GenresSerializer'
     }
+
 
 class GenresSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
