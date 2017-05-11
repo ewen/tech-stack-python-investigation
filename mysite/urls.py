@@ -19,6 +19,9 @@ from books.models import Book, Author, Genre
 
 from rest_framework import routers, viewsets
 from rest_framework_json_api import serializers
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -52,9 +55,11 @@ class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
 
+
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BooksSerializer
+
 
 class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
@@ -67,6 +72,7 @@ router.register(r'genres', GenreViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^api-auth-token', obtain_auth_token),
     url(r'^books/', include('books.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),

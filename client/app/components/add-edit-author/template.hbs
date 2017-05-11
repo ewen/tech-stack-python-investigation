@@ -1,0 +1,7 @@
+{{mediasuite-input
+  label='Author Name'
+  value=author.name
+  update=(action (mut author.name))
+}}
+
+<button {{action saveAuthor author}}>Save Author</button>
