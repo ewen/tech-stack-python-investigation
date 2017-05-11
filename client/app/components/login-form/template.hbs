@@ -1,0 +1,14 @@
+{{mediasuite-input
+  label='Username'
+  value=username
+  update=(action (mut username))
+}}
+
+{{mediasuite-input
+  type='password'
+  label='Password'
+  value=password
+  update=(action (mut password))
+}}
+
+<button {{action 'login'}}>Login</button>

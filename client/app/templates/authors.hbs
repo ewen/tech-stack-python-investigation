@@ -1,7 +1,6 @@
 <h2>Authors</h2>
 
 <ul>
-  {{log model.authors.length}}
 {{#each model.authors as |author|}}
   <li>{{author.name}}</li>
   <ul>
@@ -11,5 +10,10 @@
   </ul>
 {{/each}}
 </ul>
+
+{{add-edit-author
+  author=model.newAuthor
+  saveAuthor=(route-action 'saveAuthor')
+}}
 
 {{#link-to "index"}}Back{{/link-to}}

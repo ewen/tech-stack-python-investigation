@@ -23,11 +23,15 @@ from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.staticfiles import views
+from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Author
-        fields = ['name', 'books']
+        fields = ('name', 'books')
+        read_only_fields = ('books',)
 
     included_serializers = {
         'books': 'mysite.urls.BooksSerializer'
@@ -59,7 +63,6 @@ class AuthorViewSet(viewsets.ModelViewSet):
     serializer_class = AuthorsSerializer
 
 
-
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BooksSerializer
@@ -76,6 +79,8 @@ router.register(r'genres', GenreViewSet)
 
 urlpatterns = [
     url(r'^api/', include(router.urls)),
+    url(r'^api-auth-token', obtain_auth_token),
+    url(r'^books/', include('books.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls')),
 ]
