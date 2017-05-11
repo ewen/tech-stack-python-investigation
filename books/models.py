@@ -3,7 +3,14 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
-class Genre(models.Model):
+class BaseModel(models.Model):
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Genre(BaseModel):
     name = models.CharField(max_length=200)
     def __str__(self):
         return self.name
@@ -11,7 +18,7 @@ class Genre(models.Model):
     class JSONAPIMeta:
         resource_name = "genres"
 
-class Author(models.Model):
+class Author(BaseModel):
     name = models.CharField(max_length=200)
     def __str__(self):
         return self.name
@@ -19,7 +26,7 @@ class Author(models.Model):
     class JSONAPIMeta:
         resource_name = "authors"
 
-class Book(models.Model):
+class Book(BaseModel):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE, related_name='books')
     title = models.CharField(max_length=200)
