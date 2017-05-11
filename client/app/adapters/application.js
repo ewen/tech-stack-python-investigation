@@ -1,17 +1,11 @@
 import Ember from 'ember'
 import DS from 'ember-data'
 import ENV from 'client/config/environment'
-import CSRFToken from 'client/mixins/csrf-token'
+import RequestHeaders from 'client/mixins/request-headers'
 
-const {computed, inject, get} = Ember
+const {get} = Ember
 
-export default DS.JSONAPIAdapter.extend(CSRFToken, {
-  session: inject.service(),
-  headers: computed('session.token', function () {
-    return {
-      Authorization: 'Token ' + get(this, 'session.token')
-    }
-  }),
+export default DS.JSONAPIAdapter.extend(RequestHeaders, {
   host: ENV.apiHost,
   buildURL: function (type, id, record) {
     // call the default buildURL and then append a slash

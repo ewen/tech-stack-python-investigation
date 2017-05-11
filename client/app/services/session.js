@@ -1,12 +1,13 @@
 import Ember from 'ember'
 import AjaxService from 'ember-ajax/services/ajax'
 import ENV from 'client/config/environment'
+import RequestHeaders from 'client/mixins/request-headers'
 const { inject, set, computed } = Ember
 
 // const CurrentUserProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin)
 // CurrentUserProxy[NAME_KEY] = 'current-user'
 
-export default AjaxService.extend({
+export default AjaxService.extend(RequestHeaders, {
   store: inject.service(),
   // nameNumber: inject.service(),
   returnTo: '',
