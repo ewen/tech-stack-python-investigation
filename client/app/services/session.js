@@ -1,13 +1,15 @@
 import Ember from 'ember'
 import AjaxService from 'ember-ajax/services/ajax'
 import ENV from 'client/config/environment'
-const { inject, set, computed } = Ember
+import RequestHeaders from 'client/mixins/request-headers'
+const { inject, set, computed, get } = Ember
 
 // const CurrentUserProxy = Ember.ObjectProxy.extend(Ember.PromiseProxyMixin)
 // CurrentUserProxy[NAME_KEY] = 'current-user'
 
-export default AjaxService.extend({
+export default AjaxService.extend(RequestHeaders, {
   store: inject.service(),
+  cookies: inject.service(),
   // nameNumber: inject.service(),
   returnTo: '',
   userId: computed.alias('currentUser.id').readOnly(),
@@ -42,13 +44,16 @@ export default AjaxService.extend({
     // window.location.assign(get(this, 'loginPath'))
     return this.post(`${ENV.apiHost}/api-auth-token`, {data: {username, password}})
       .then(data => {
+        get(this, 'cookies').write('authtoken', data.token)
         set(this, 'token', data.token)
         return
       })
   },
 
   logout () {
-    window.location.assign('/logout')
+    get(this, 'cookies').clear('authtoken')
+    set(this, 'token', undefined)
+    window.location.assign('/')
   },
 
   changePassword () {

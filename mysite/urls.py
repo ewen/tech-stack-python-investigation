@@ -19,9 +19,15 @@ from books.models import Book, Author, Genre
 
 from rest_framework import routers, viewsets
 from rest_framework_json_api import serializers
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render
+from django.conf import settings
+from django.contrib.staticfiles import views
 from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from urllib.request import urlopen
+from django.http import HttpResponse
 
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -53,6 +59,7 @@ class GenresSerializer(serializers.HyperlinkedModelSerializer):
         'books': 'mysite.urls.BooksSerializer'
     }
 
+
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
@@ -73,9 +80,26 @@ router.register(r'authors', AuthorViewSet)
 router.register(r'genres', GenreViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^api-auth-token', obtain_auth_token),
+    url(r'^api/api-auth/', include('rest_framework.urls')),
+    url(r'^api/api-auth-token', obtain_auth_token),
+    url(r'^api/', include(router.urls)),
     url(r'^books/', include('books.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^api-auth/', include('rest_framework.urls')),
 ]
+
+def proxy_live_reload(request):
+    url = "http://localhost:4200/ember-cli-live-reload.js"
+    response = urlopen(url)
+    return HttpResponse(response.read())
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'^assets/(?P<path>.*)$', views.serve),
+        url(r'^ember-cli-live-reload.js$', proxy_live_reload),
+    ]
+
+def ember (request):
+    return render(request, 'index.html', {})
+
+# Serve up Ember
+urlpatterns.append(url(r'^', ember))
