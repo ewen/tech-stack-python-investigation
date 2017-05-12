@@ -139,6 +139,9 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/assets/'
 
+JSON_API_PLURALIZE_TYPES = True
+JSON_API_FORMAT_TYPES = 'dasherize'
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
