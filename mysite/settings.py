@@ -139,6 +139,9 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/assets/'
 
+JSON_API_PLURALIZE_TYPES = True
+JSON_API_FORMAT_TYPES = 'dasherize'
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -165,4 +168,5 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ),
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
+    'DEFAULT_FILTER_BACKENDS': ['url_filter.integrations.drf.DjangoFilterBackend',]
 }

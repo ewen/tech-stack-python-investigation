@@ -1,5 +1,5 @@
 <h2>Authors</h2>
-
+{{search-authors-filters filters=model.filters search=(route-action 'search')}}
 <ul>
 {{#each model.authors as |author|}}
   <li>{{author.name}}</li>

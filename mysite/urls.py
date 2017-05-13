@@ -28,6 +28,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from urllib.request import urlopen
 from django.http import HttpResponse
+from url_filter.integrations.drf import DjangoFilterBackend
+
+
 
 class AuthorsSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -63,6 +66,11 @@ class GenresSerializer(serializers.HyperlinkedModelSerializer):
 class AuthorViewSet(viewsets.ModelViewSet):
     queryset = Author.objects.all()
     serializer_class = AuthorsSerializer
+    # http://django-url-filter.readthedocs.io/en/latest/usage.html#django-rest-framework
+    # Docs seem to indicate if the setting is made in the settings.py file then we shouldn't need this, but I couldn't
+    # get that to work
+    filter_backends = [DjangoFilterBackend]
+    filter_fields=['name']
 
 
 class BookViewSet(viewsets.ModelViewSet):

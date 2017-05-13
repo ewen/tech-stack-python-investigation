@@ -1,0 +1,7 @@
+{{mediasuite-input
+  label='Name Search'
+  value=filters.name
+  update=(action (mut filters.name))
+}}
+
+<button {{action search filters}}>Search</button>

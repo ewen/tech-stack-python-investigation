@@ -8,16 +8,12 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
-    class JSONAPIMeta:
-        resource_name = "genres"
 
 class Author(models.Model):
     name = models.CharField(max_length=200)
     def __str__(self):
         return self.name
 
-    class JSONAPIMeta:
-        resource_name = "authors"
 
 class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
@@ -27,9 +23,6 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-
-    class JSONAPIMeta:
-        resource_name = "books"
 
     @property
     def was_published_recently(self):
