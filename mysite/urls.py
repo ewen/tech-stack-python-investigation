@@ -18,7 +18,6 @@ from django.contrib import admin
 from books.models import Book, Author, Genre
 
 from rest_framework import routers, viewsets, status
-from django.http import HttpResponse
 from rest_framework_json_api import serializers
 from django.shortcuts import render
 from django.conf import settings
@@ -90,7 +89,7 @@ def register(request):
     password = request.POST['password']
     roles = request.POST.getlist('roles[]')
 
-    content_type = ContentType.objects.get_for_model(User)
+    # content_type = ContentType.objects.get_for_model(User)
     permissions = Permission.objects.filter(codename__in=roles)
 
     user = User.objects.create_user(username, None, password)
