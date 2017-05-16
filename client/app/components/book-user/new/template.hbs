@@ -1,0 +1,22 @@
+<form autocomplete="off">
+  {{mediasuite-input
+    label='New Username'
+    value=user.username
+    update=(action (mut user.username))
+  }}
+
+  {{mediasuite-input
+    type='password'
+    label='New Password'
+    value=user.password
+    update=(action (mut user.password))
+  }}
+
+  {{mediasuite-check-boxes
+    options=roles
+    groupLabel="Pick your roles!"
+    update=(action (mut user.roles))
+  }}
+</form>
+
+<button {{action 'createUser'}}>Create User</button>
