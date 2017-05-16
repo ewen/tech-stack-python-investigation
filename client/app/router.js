@@ -11,6 +11,8 @@ Router.map(function () {
   this.route('index')
   this.route('books')
   this.route('authors')
+
+  this.route('new-user', {path: '/user/new'})
 })
 
 export default Router

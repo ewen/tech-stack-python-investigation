@@ -17,18 +17,19 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from books.models import Book, Author, Genre
 
-from rest_framework import routers, viewsets
+from rest_framework import routers, viewsets, status
 from rest_framework_json_api import serializers
-from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib.staticfiles import views
 from rest_framework.authtoken.views import obtain_auth_token
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
 from urllib.request import urlopen
 from django.http import HttpResponse
 from url_filter.integrations.drf import DjangoFilterBackend
+
+from django.contrib.auth.models import User, Permission
+from django.contrib.contenttypes.models import ContentType
+
 
 
 
@@ -82,6 +83,20 @@ class GenreViewSet(viewsets.ModelViewSet):
     queryset = Genre.objects.all()
     serializer_class = GenresSerializer
 
+def register(request):
+    if (request.method != 'POST'): return
+    username = request.POST['username']
+    password = request.POST['password']
+    roles = request.POST.getlist('roles[]')
+
+    # content_type = ContentType.objects.get_for_model(User)
+    permissions = Permission.objects.filter(codename__in=roles)
+
+    user = User.objects.create_user(username, None, password)
+    user.user_permissions.set(permissions)
+    return HttpResponse(status=status.HTTP_201_CREATED)
+
+
 router = routers.DefaultRouter()
 router.register(r'books', BookViewSet)
 router.register(r'authors', AuthorViewSet)
@@ -90,6 +105,7 @@ router.register(r'genres', GenreViewSet)
 urlpatterns = [
     url(r'^api/api-auth/', include('rest_framework.urls')),
     url(r'^api/api-auth-token', obtain_auth_token),
+    url(r'^api/register', register),
     url(r'^api/', include(router.urls)),
     url(r'^books/', include('books.urls')),
     url(r'^admin/', admin.site.urls),
