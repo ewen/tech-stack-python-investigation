@@ -12,6 +12,8 @@ Router.map(function () {
   this.route('books')
   this.route('authors')
 
+  this.route('dynamic-form')
+
   this.route('new-user', {path: '/user/new'})
 })
 
