@@ -1,21 +1,37 @@
-// import Ember from 'ember'
-// const { set, get } = Ember
-//
-// export default Ember.Mixin.create({
-//   // value: computed('state', 'component.name', function () {
-//   //   const updated = get(this, 'state').find(item => item.name === get(this, 'component.name'))
-//   //   return updated.value
-//   // }),
-//
-//   init () {
-//     this._super(...arguments)
-//     const updated = get(this, 'state').find(item => item.name === get(this, 'component.name'))
-//     set(this, 'value', updated.value)
-//   },
-//
-//   actions: {
-//     updateState (value) {
-//       get(this, 'updateState')(get(this, 'component'), value)
-//     }
-//   }
-// })
+import Ember from 'ember'
+
+const { computed, get, observer } = Ember
+
+export default Ember.Mixin.create({
+  values: [],
+
+  display: computed('state', 'component.{name,conditions,repeatable}', function () {
+    const conditions = get(this, 'component.conditions')
+    const state = get(this, 'state')
+    if (!conditions || conditions.length === 0) return true
+
+    // todo: move to lodash at some point
+    const keys = Object.keys(state)
+    return conditions.every(condition => {
+      const target = keys.find(key => key === condition.name)
+      // Purposeful non-strict compare so we don't fall foul of "string or number" type issues
+      // Also, note that we only use the first element.  Not sure yet how we would handle a condition with repeated elements
+      return (state[target][0] == condition.value) // eslint-disable-line eqeqeq
+    })
+  }),
+
+  // Text elements need the value to be updated as you type in order to update
+  valuesObserver: observer('state', 'component.name', function () {
+    this.conditionalSetValues()
+  }),
+
+  actions: {
+    updateState (index, selectedItem) {
+      // Need a custom updateState to pick the value off the selectedItem
+      get(this, 'updateState')(get(this, 'component'), selectedItem.value, index)
+    },
+    add () {
+      get(this, 'updateState')(get(this, 'component'), null, get(this, 'values.length'))
+    }
+  }
+})

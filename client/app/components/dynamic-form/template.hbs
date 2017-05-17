@@ -1,15 +1,10 @@
 {{#each form.components as |component|}}
-  {{#if component.help}}
-    <div>{{component.help}}</div>
-  {{/if}}
   {{component (concat 'dynamic-form/' component.type)
       component=component
       state=form.state
       updateState=(action 'updateState')
   }}
-  {{#if component.repeatable}}
-    <button>Add Another</button>
-  {{/if}}
 {{/each}}
+
 
 {{log form.state}}

@@ -1,13 +1,18 @@
 import Ember from 'ember'
-const { set, get } = Ember
+const { set, get, copy } = Ember
 
 export default Ember.Component.extend({
   actions: {
-    updateState (component, value) {
-      const state = get(this, 'form.state')
-      const updated = state.find(item => item.name === component.name)
-      set(updated, 'value', value)
-      set(this, 'form.state', JSON.parse(JSON.stringify(state)))
+    updateState (component, value, index) {
+      const state = copy(get(this, 'form.state'), true)
+
+      if (state[component.name]) {
+        state[component.name][index] = value
+      } else {
+        // The element is not in the state, so we need to add it
+        state[component.name] = [value]
+      }
+      set(this, 'form.state', state)
     }
   }
 })

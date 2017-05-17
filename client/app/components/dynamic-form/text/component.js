@@ -1,17 +1,24 @@
 import Ember from 'ember'
-const { computed, get } = Ember
-// import DynamicComponent from 'client/mixins/components/dynamic-component'
+const { get, set } = Ember
+import DynamicComponent from 'client/mixins/components/dynamic-component'
 
-export default Ember.Component.extend({
-  // Text elements need the value to be updated as you type in order to update
-  value: computed('state', 'component.name', function () {
-    const updated = get(this, 'state').find(item => item.name === get(this, 'component.name'))
-    return updated.value
-  }),
+export default Ember.Component.extend(DynamicComponent, {
 
-  actions: {
-    updateState (value) {
-      get(this, 'updateState')(get(this, 'component'), value)
+  conditionalSetValues () {
+    const componentName = get(this, 'component.name')
+    const stateItem = get(this, `state.${componentName}`)
+    if (stateItem.length !== get(this, 'values.length')) {
+      set(this, 'values', stateItem)
     }
+  },
+  init () {
+    this._super(...arguments)
+    this.conditionalSetValues()
   }
+
 })
+
+// Each component is responsible for
+// - Deciding whether it should be rendered or not based on conditions
+// - Providing the right data to be updated on change
+// - Rendering multiple versions when repeatable

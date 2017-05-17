@@ -40,15 +40,44 @@ export default {
       'label': 'Reference number',
       'type': 'text',
       'repeatable': false,
-      'condition': [
+      'conditions': [
         {'name': 'councilRefAllocated', 'value': true}
       ]
-    }
+    },
+    {
+      'name': 'affectedParties',
+      'label': 'Affected Parties',
+      'type': 'text',
+      'repeatable': true
+    },
+    {
+      'name': 'affectedAreas',
+      'label': 'Which area is affected?',
+      'type': 'radio',
+      'options': [
+        {'value': 1, 'label': 'Coastal'},
+        {'value': 2, 'label': 'Forest'},
+        {'value': 3, 'label': 'Lakes'},
+        {'value': 4, 'label': 'Plains'}
+      ],
+      'repeatable': true
+    },
   ],
-  'state': [
-    {'name': 'targetOrg', 'value': 4},
-    {'name': 'agentOrApplicant', 'value': 1},
-    {'name': 'councilRefAllocated', 'value': false},
-    {'name': 'refNumber', 'value': 'Abc1234'}
-  ]
+
+  'state': {
+    targetOrg: [4],
+    agentOrApplicant: [1],
+    councilRefAllocated: [false],
+    refNumber: ['Abc1234'],
+    affectedParties: ['Peter', 'Michael'],
+    affectedAreas: [null]
+  }
+  // state: [
+  //   {'name': 'targetOrg', 'value': [4]},
+  //   {'name': 'agentOrApplicant', 'value': [1]},
+  //   {'name': 'councilRefAllocated', 'value': [false]},
+  //   {'name': 'refNumber', 'value': ['Abc1234']},
+  //   {'name': 'affectedParties', 'value': ['Peter', 'Michael']}
+  // ]
+  // ]
 }
