@@ -1,10 +1,14 @@
-{{#each values as |subState index|}}
-  {{dynamic-form/manage-components
-    components=component.components
-    state=subState
-    updateState=(action 'updateState' index)
-  }}
-{{/each}}
-{{#if component.repeatable}}
-  <button {{action 'add'}}>Add</button>
+{{#if display}}
+  {{#each values as |_val index|}}
+    <!-- Using a helper here to get the substate, rather than _val.  This the sub-sections get fresh state when
+       it changes, and don't have to force values to update, which would cause an unwanted re-render -->
+    {{dynamic-form/manage-components
+      components=component.components
+      state=(get-substate state component index)
+      updateState=(action 'updateState' index)
+    }}
+  {{/each}}
+  {{#if component.repeatable}}
+    <button {{action 'add'}}>Add</button>
+  {{/if}}
 {{/if}}

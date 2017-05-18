@@ -1,30 +1,19 @@
 import Ember from 'ember'
 import DynamicComponent from 'client/mixins/components/dynamic-component'
+import { buildState } from 'client/utils/dynamic-forms-utils'
 const { get, set, copy } = Ember
 
 export default Ember.Component.extend(DynamicComponent, {
 
   conditionalSetValues () {
+    // Note, for sections, the values are not used as anything other than an array to help render the right amount of
+    // components
     const componentName = get(this, 'component.name')
     const stateItem = get(this, `state.${componentName}`)
-    // console.log(get(this, 'state'))
+
     if (!stateItem || stateItem.length !== get(this, 'values.length')) {
       set(this, 'values', stateItem)
     }
-  },
-
-  buildInitialState (components) {
-    const state = components.reduce((tempState, component) => {
-      if (!component.components) {
-        tempState[component.name] = [component.default] || [null]
-      } else {
-        // Holy Recursing, Batman!
-        tempState[component.name] = [this.buildState(component.components)]
-      }
-      return tempState
-    }, {})
-
-    return state
   },
 
   actions: {
@@ -45,7 +34,7 @@ export default Ember.Component.extend(DynamicComponent, {
     },
 
     add () {
-      const nullState = this.buildInitialState(get(this, 'component.components'))
+      const nullState = buildState({}, get(this, 'component.components'))
       get(this, 'updateState')(get(this, 'component'), nullState, get(this, 'values.length'))
     }
   }

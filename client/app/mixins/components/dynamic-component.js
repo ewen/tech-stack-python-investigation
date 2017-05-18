@@ -10,7 +10,7 @@ export default Ember.Mixin.create({
     this.conditionalSetValues()
   },
 
-  display: computed('state', 'component.{name,conditions,repeatable}', function () {
+  display: computed('state', 'component.{name,conditions}', function () {
     const conditions = get(this, 'component.conditions')
     const state = get(this, 'state')
     if (!conditions || conditions.length === 0) return true
