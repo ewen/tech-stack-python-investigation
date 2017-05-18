@@ -1,0 +1,10 @@
+{{#each values as |subState index|}}
+  {{dynamic-form/manage-components
+    components=component.components
+    state=subState
+    updateState=(action 'updateState' index)
+  }}
+{{/each}}
+{{#if component.repeatable}}
+  <button {{action 'add'}}>Add</button>
+{{/if}}

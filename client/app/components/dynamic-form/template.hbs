@@ -1,10 +1,5 @@
-{{#each form.components as |component|}}
-  {{component (concat 'dynamic-form/' component.type)
-      component=component
-      state=form.state
-      updateState=(action 'updateState')
-  }}
-{{/each}}
-
-
-{{log form.state}}
+{{dynamic-form/manage-components
+  components=form.components
+  state=form.state
+  updateState=(action 'updateState')
+}}

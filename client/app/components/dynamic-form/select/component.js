@@ -6,14 +6,10 @@ export default Ember.Component.extend(DynamicComponent, {
   // select and radio elements will throw an error if you keep the value updated with a computed property due
   // to a double render.  The control represents the new value, without the 'value' being kept in sync, so can
   // get away with just setting on init
-  init () {
-    this._super()
-    set(this, 'values', get(this, `state.${get(this, 'component.name')}`).map(val => {
-      return get(this, 'component.options').find(option => option.value === val)
-    }))
-  },
-
   conditionalSetValues () {
+    // If we don't have state, don't crash
+    if (get(this, 'state') == null) return set(this, 'values', [])
+
     set(this, 'values', get(this, `state.${get(this, 'component.name')}`).map(val => {
       return get(this, 'component.options').find(option => option.value === val)
     }))

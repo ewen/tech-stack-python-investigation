@@ -7,13 +7,10 @@ export default Ember.Component.extend(DynamicComponent, {
   conditionalSetValues () {
     const componentName = get(this, 'component.name')
     const stateItem = get(this, `state.${componentName}`)
-    if (stateItem.length !== get(this, 'values.length')) {
+
+    if (!stateItem || stateItem.length !== get(this, 'values.length')) {
       set(this, 'values', stateItem)
     }
-  },
-  init () {
-    this._super(...arguments)
-    this.conditionalSetValues()
   }
 
 })

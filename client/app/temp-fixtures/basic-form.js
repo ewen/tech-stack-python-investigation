@@ -62,6 +62,82 @@ export default {
       ],
       'repeatable': true
     },
+    {
+      'name': 'applications',
+      'type': 'section',
+      'repeatable': true,
+      'components': [
+        {
+          'name': 'applicantType',
+          'label': 'Type',
+          'type': 'radio',
+          'options': [
+            {'value': 1, 'label': 'Individual'},
+            {'value': 2, 'label': 'Company'},
+            {'value': 3, 'label': 'Trust'}
+          ],
+        },
+        {
+          'name': 'applicantName',
+          'label': 'Applicant Name',
+          'type': 'text'
+        }
+        // {
+        //   'name': 'individual',
+        //   'type': 'section',
+        //   'conditions': {'name': 'applicantType', 'value': 1},
+        //   'components': [
+        //     {
+        //       'name': 'firstName',
+        //       'label': 'First name(s)',
+        //       'help': 'Some help text',
+        //       'type': 'text'
+        //     },
+        //     {
+        //       'name': 'lastName',
+        //       'label': 'Last Name',
+        //       'type': 'text'
+        //     }
+        //   ],
+        // },
+        // {
+        //   'name': 'company',
+        //   'type': 'section',
+        //   'conditions': {'name': 'applicantType', 'value': 2},
+        //   'components': [
+        //     {
+        //       'name': 'companyName',
+        //       'label': 'Company Name',
+        //       'help': 'Some help text',
+        //       'type': 'text'
+        //     },
+        //     {
+        //       'name': 'companyNumber',
+        //       'label': 'Registered Company Number',
+        //       'type': 'text'
+        //     },
+        //     {
+        //       'name': 'trust',
+        //       'type': 'section',
+        //       'conditions': [{'name': 'applicantType', 'value': 3}],
+        //       'components': [
+        //         {
+        //           'name': 'trustName',
+        //           'label': 'Trust Name',
+        //           'help': 'Some help text',
+        //           'type': 'text'
+        //         },
+        //         {
+        //           'name': 'trustNumber',
+        //           'label': 'Registered Trust Number',
+        //           'type': 'text'
+        //         }
+        //       ]
+        //     }
+        //   ]
+        // }
+      ]
+    }
   ],
 
   'state': {
@@ -70,7 +146,11 @@ export default {
     councilRefAllocated: [false],
     refNumber: ['Abc1234'],
     affectedParties: ['Peter', 'Michael'],
-    affectedAreas: [null]
+    affectedAreas: [null],
+    applications: [{
+      applicantType: [2],
+      applicantName: [null]
+    }]
   }
   // state: [
   //   {'name': 'targetOrg', 'value': [4]},

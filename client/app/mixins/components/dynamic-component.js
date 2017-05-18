@@ -5,6 +5,11 @@ const { computed, get, observer } = Ember
 export default Ember.Mixin.create({
   values: [],
 
+  init () {
+    this._super()
+    this.conditionalSetValues()
+  },
+
   display: computed('state', 'component.{name,conditions,repeatable}', function () {
     const conditions = get(this, 'component.conditions')
     const state = get(this, 'state')
